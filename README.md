@@ -1,8 +1,8 @@
 # Max Fun Con Listener
-
+  
 ## About
 
-This small Ruby app checks the [Max Fun Con]() website every two minutes and sees if there is a new `H2` tag in the `#body`. If a new tag has added, in other words, MaxFunCon posted a new post, then it sends a tweet from [@a1erter](https://twitter.com/a1erter). It then updates the YAML file of blog post titles and exits the loop. 
+This small Ruby app checks the [Max Fun Con](http://www.maxfuncon.com/) website every two minutes and sees if there is a new `H2` tag in the `#blog` div. If a new tag has added, in other words, MaxFunCon posted a new post, it sends a tweet from [@a1erter](https://twitter.com/a1erter). It then updates the YAML file of blog post titles and exits the loop.
 
 ## Why?
 
