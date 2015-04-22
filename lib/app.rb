@@ -8,14 +8,12 @@ class App
     app.run
   end   
 
-  attr_reader :html, :old_titles, :new_titles, :url, :yaml_file, :env
-  attr_accessor :different
+  attr_reader :old_titles, :url, :yaml_file, :env
+  attr_accessor :different, :new_titles, :html
 
   def initialize(url, env)
     @url = url
     @env = env
-    @html = save_html(url)
-    @new_titles = process_titles(get_titles)
     @yaml_file = set_file 
     @old_titles = YAML.load_file(yaml_file)
     @different = false
@@ -29,9 +27,15 @@ class App
     Nokogiri::HTML(open(url))
   end
 
+  def fetch_titles
+    self.html = save_html(url)
+    self.new_titles = process_titles(get_titles)
+  end
+
   def run
     puts "Tracking #{url}"
     until different
+      fetch_titles
       compare
       sleep(120)
     end
