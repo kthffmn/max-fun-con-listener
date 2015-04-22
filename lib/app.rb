@@ -3,22 +3,22 @@ class App
   PUNCTUATION_MARKS = %w[ ; : ? ! . , - ]
   yaml_file = "lib/fixtures/blog-titles.yml"
 
-  def self.run(url="http://www.maxfuncon.com/", env="dev")
-    app = self.new(url)
+  def self.run(url="http://www.#{maxfuncon}.com/", env="dev")
+    app = self.new(url, env)
     app.run
   end   
 
-  attr_reader :html, :old_titles, :new_titles, :url, :yaml_file
+  attr_reader :html, :old_titles, :new_titles, :url, :yaml_file, :env
   attr_accessor :different
 
   def initialize(url, env)
     @url = url
+    @env = env
     @html = save_html(url)
     @new_titles = process_titles(get_titles)
+    @yaml_file = set_file 
     @old_titles = YAML.load_file(yaml_file)
     @different = false
-    @yaml_file = set_file
-
   end
 
   def set_file
@@ -30,9 +30,10 @@ class App
   end
 
   def run
+    puts "Tracking #{url}"
     until different
       compare
-      sleep(2.minutes)
+      sleep(120)
     end
   end
 
@@ -52,7 +53,7 @@ class App
   end
 
   def update_titles
-    yml = titles.to_yaml
+    yml = new_titles.to_yaml
     File.open(yaml_file, 'w') { |file| file.write(yml) }
   end
 
