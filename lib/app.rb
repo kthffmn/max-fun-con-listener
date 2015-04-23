@@ -3,7 +3,7 @@ class App
   PUNCTUATION_MARKS = %w[ ; : ? ! . , - ]
   yaml_file = "lib/fixtures/blog-titles.yml"
 
-  def self.run(url="http://www.#{maxfuncon}.com/", env="dev")
+  def self.run(url="http://www.maxfuncon.com", env="dev")
     app = self.new(url, env)
     app.run
   end   
@@ -33,12 +33,20 @@ class App
   end
 
   def run
-    puts "Tracking #{url}"
+    first_time = true
     until different
       fetch_titles
+      print_title if first_time
       compare
+      first_time = false if first_time
+      print "."
       sleep(120)
     end
+  end
+
+  def print_title
+    website_title = html.search("h1").text
+    puts "Tracking #{website_title}"
   end
 
   def compare
